@@ -1,0 +1,9 @@
+@import './_mobile/header__menu_mobile.css';
+
+.header__menu {
+  position: absolute;
+  right: 0;
+  bottom: 50%;
+  transform: translateY(60%);
+  display: flex;
+}

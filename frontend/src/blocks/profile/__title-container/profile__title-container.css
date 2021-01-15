@@ -1,0 +1,15 @@
+.profile__title-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+  margin-bottom: 16px;
+}
+
+@media screen and (max-width: 619px) {
+  .profile__title-container {
+    margin-bottom: 14px;
+    }
+}

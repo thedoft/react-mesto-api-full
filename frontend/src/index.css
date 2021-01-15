@@ -1,0 +1,25 @@
+@import './fonts/fonts.css';
+
+@import './blocks/page/page.css';
+@import './blocks/header/header.css';
+@import './blocks/main/main.css';
+
+@import './blocks/profile/profile.css';
+@import './blocks/elements/elements.css';
+@import './blocks/element/element.css';
+@import './blocks/element/__like-button/_active/element__like-button_active.css';
+
+@import './blocks/auth/auth.css';
+@import './blocks/form/form.css';
+
+@import './blocks/footer/footer.css';
+
+@import './blocks/popup/popup.css';
+@import './blocks/popup/_opened/popup_opened.css';
+@import './blocks/popup/_type/popup_type_image.css';
+@import './blocks/popup/__title/_tooltip/popup__title_tooltip.css';
+@import './blocks/popup/__input/_type/popup__input_type_error.css';
+@import './blocks/popup/__input-error/_type/popup__input-error_active.css';
+@import './blocks/popup/__submit-button/_inactive/popup__submit-button_inactive.css';
+
+@import './blocks/hidden/hidden.css';

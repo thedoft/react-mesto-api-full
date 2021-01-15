@@ -1,0 +1,28 @@
+@import './__logo/header__logo.css';
+@import './__menu/header__menu.css';
+@import './__container/header__container.css';
+@import './__user-login/header__user-login.css';
+@import './__navlink/header__navlink.css';
+@import './__navlink/_logged-in/header__navlink_logged-in.css';
+@import './__menu-button/header__menu-button.css';
+@import './__menu-button/_opened/header__menu-button_opened.css';
+
+.header {
+  max-width: 882px;
+  width: 100%;
+  padding: 45px 0 41px;
+  border-bottom: 1px solid rgba(84, 84, 84, .7);
+  position: relative;
+}
+
+@media screen and (max-width: 919px) {
+  .header {
+    max-width: calc(100% - 38px);
+  }
+}
+
+@media screen and (max-width: 619px) {
+  .header {
+    padding: 28px 0 31px;
+    }
+}

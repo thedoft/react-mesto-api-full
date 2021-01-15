@@ -1,0 +1,13 @@
+.header__user-login {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #fff;
+  margin: 0 24px 0 0;
+}
+
+@media screen and (max-width: 425px) {
+  .header__user-login {
+    margin: 0 0 18px;
+  }
+}

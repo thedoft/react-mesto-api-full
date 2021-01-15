@@ -1,0 +1,17 @@
+@import './__text/auth__text.css';
+@import './__link/auth__link.css';
+
+.auth {
+  width: 100%;
+  padding: 60px 0 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (max-width: 619px) {
+  .auth {
+    flex-direction: column;
+    padding: 40px 0 77px;
+  }
+}

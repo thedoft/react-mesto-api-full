@@ -1,0 +1,4 @@
+.header__menu-button_opened {
+  background: url(../../../../images/close-button.svg) no-repeat center / contain;
+  transform: rotate(45deg);
+}

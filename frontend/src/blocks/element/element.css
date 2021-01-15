@@ -1,0 +1,24 @@
+@import url(./__image/element__image.css);
+@import url(./__title-container/element__title-container.css);
+@import url(./__title/element__title.css);
+@import url(./__likes-container/element__likes-container.css);
+@import url(./__like-button/element__like-button.css);
+@import url(./__likes-count/element__likes-count.css);
+@import url(./__trash-button/element__trash-button.css);
+
+.element {
+  position: relative;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}

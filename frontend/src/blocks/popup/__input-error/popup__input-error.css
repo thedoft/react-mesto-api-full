@@ -1,0 +1,10 @@
+.popup__input-error {
+  display: inline-block;
+  margin-bottom: 30px;
+}
+
+@media screen and (max-width: 619px) {
+  .popup__input-error {
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,23 @@
+@import './__title/form__title.css';
+@import './__info/form__info.css';
+@import './__input/form__input.css';
+@import './__input-error/form__input-error.css';
+@import './__submit-button/form__submit-button.css';
+@import './__submit-button/_inactive/form__submit-button_inactive.css';
+
+.form {
+  width: 430px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 0 36px;
+}
+
+@media screen and (max-width: 619px) {
+  .form {
+    min-width: 260px;
+    max-width: 360px;
+    width: 75vw;
+    padding: 0;
+  }
+}
