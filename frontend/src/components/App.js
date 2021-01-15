@@ -67,14 +67,14 @@ function App() {
 
     auth.register({ email, password })
       .then(() => {
-        setIsInfoTooltipOpen(true);
         setInfoTooltipOk();
+        setIsInfoTooltipOpen(true);
 
         history.push('/signin');
       })
       .catch(() => {
-        setIsInfoTooltipOpen(true);
         setInfoTooltipError();
+        setIsInfoTooltipOpen(true);
       })
       .finally(() => setIsLoading(false));
   }
@@ -84,8 +84,7 @@ function App() {
 
     auth.login({ email, password })
       .then((res) => {
-        if (res.token) {
-          localStorage.setItem('token', res.token);
+        if (res.ok) {
           localStorage.setItem('login', email);
           setIsLoggedIn(true);
           setHeaderUserLogin(email);
@@ -94,35 +93,27 @@ function App() {
         }
       })
       .catch(() => {
-        setIsInfoTooltipOpen(true);
         setInfoTooltipError();
+        setIsInfoTooltipOpen(true);
       })
       .finally(() => setIsLoading(false));
   }
 
   function handleSignOut() {
-    localStorage.removeItem('token');
     setIsLoggedIn(false);
     setHeaderUserLogin('');
   }
 
-  function checkToken() {
-    if (localStorage.getItem('token')) {
-      const token = localStorage.getItem('token');
-
-      auth.getContent(token)
-        .then(() => {
-          setIsLoggedIn(true);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }
-
   useEffect(() => {
-    checkToken();
-    setHeaderUserLogin(localStorage.getItem('login'));
+    auth.getContent()
+    .then(() => {
+      setIsLoggedIn(true);
+      setHeaderUserLogin(localStorage.getItem('login'));
+    })
+    .catch(() => {
+      setInfoTooltipError();
+      setIsInfoTooltipOpen(true);
+    });
   }, []);
 
   useEffect(() => {

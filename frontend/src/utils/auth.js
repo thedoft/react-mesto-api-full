@@ -25,16 +25,15 @@ export function login({ email, password }) {
       email,
       password
     }),
+    credentials: 'include',
   })
     .then((res) => handlePromiseRes(res))
 }
 
-export function getContent(jwt) {
+export function getContent() {
   return fetch(`${BASE_URL}/users/me`, {
-    headers: {
-      ...headers,
-      'Authorization' : `Bearer ${jwt}`
-    },
+    headers,
+    credentials: 'include',
   })
     .then((res) => handlePromiseRes(res))
 }
