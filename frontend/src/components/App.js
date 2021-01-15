@@ -16,8 +16,8 @@ import ConfirmPopup from './ConfirmPopup';
 import InfoTooltip from './InfoTooltip';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import * as api from '../utils/api';
-import * as auth from '../utils/auth';
+import * as cardsApi from '../utils/cards-api';
+import * as userApi from '../utils/user-api';
 
 import infoTooltipOkImage from '../images/info-tooltip-ok.svg';
 import infoTooltipErrorImage from '../images/info-tooltip-error.svg';
@@ -40,7 +40,7 @@ function App() {
 
   const [headerNavlinkPath, setHeaderNavlinkPath] = useState('/');
   const [headerNavlinkText, setHeaderNavlinkText] = useState('');
-  const [headerUserLogin, setHeaderUserLogin] = useState('');
+  const [userLogin, setUserLogin] = useState('');
 
   const [infoTooltipTitle, setInfoTooltipTitle] = useState('');
   const [infoTooltipImage, setInfoTooltipImage] = useState('');
@@ -65,7 +65,7 @@ function App() {
   function handleRegister({ email, password }) {
     setIsLoading(true);
 
-    auth.register({ email, password })
+    userApi.register({ email, password })
       .then(() => {
         setInfoTooltipOk();
         setIsInfoTooltipOpen(true);
@@ -82,15 +82,10 @@ function App() {
   function handleLogin({ email, password }) {
     setIsLoading(true);
 
-    auth.login({ email, password })
-      .then((res) => {
-        if (res.ok) {
-          localStorage.setItem('login', email);
-          setIsLoggedIn(true);
-          setHeaderUserLogin(email);
-        } else {
-          return;
-        }
+    userApi.login({ email, password })
+      .then(() => {
+        setIsLoggedIn(true);
+        setUserLogin(email);
       })
       .catch(() => {
         setInfoTooltipError();
@@ -101,33 +96,24 @@ function App() {
 
   function handleSignOut() {
     setIsLoggedIn(false);
-    setHeaderUserLogin('');
+    setUserLogin('');
   }
 
   useEffect(() => {
-    auth.getContent()
-    .then(() => {
-      setIsLoggedIn(true);
-      setHeaderUserLogin(localStorage.getItem('login'));
-    })
-    .catch(() => {
-      setInfoTooltipError();
-      setIsInfoTooltipOpen(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    api.getUserData()
-      .then(userData => {
+    userApi.getUserData()
+      .then((userData) => {
         setCurrentUser(userData);
+        setIsLoggedIn(true);
+        setUserLogin(userData.email);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(() => {
+        setInfoTooltipError();
+        setIsInfoTooltipOpen(true);
       });
   }, []);
 
   useEffect(() => {
-    api.getInitialCards()
+    cardsApi.getInitialCards()
       .then(initialCards => {
         setCards(initialCards);
       })
@@ -139,7 +125,7 @@ function App() {
   function handleCardLikeClick(card) {
     const isLiked = card.likes.some(user => user._id === currentUser._id);
 
-    api.changeLikeCardStatus({ _id: card._id}, (isLiked ? 'DELETE' : 'PUT'))
+    cardsApi.changeLikeCardStatus({ _id: card._id}, (isLiked ? 'DELETE' : 'PUT'))
       .then(newCard => {
         const newCards = cards.map(c => c._id === card._id ? newCard : c);
         setCards(newCards);
@@ -157,7 +143,7 @@ function App() {
   function handleCardDelete(card) {
     setIsLoading(true);
 
-    api.deleteCard({ _id: card._id })
+    cardsApi.deleteCard({ _id: card._id })
     .then(() => {
       const newCards = cards.filter(c => c._id !== card._id);
       setCards(newCards);
@@ -210,7 +196,7 @@ function App() {
   function handleUpdateUser({ name, about }) {
     setIsLoading(true);
 
-    api.patchUserProfile({ name, about })
+    userApi.patchUserProfile({ name, about })
       .then(userData => {
         setCurrentUser(userData);
         closeAllPopups();
@@ -224,7 +210,7 @@ function App() {
   function handleUpdateAvatar({ avatar }) {
     setIsLoading(true);
 
-    api.patchUserAvatar({ avatar })
+    userApi.patchUserAvatar({ avatar })
       .then(userData => {
         setCurrentUser(userData);
         closeAllPopups();
@@ -238,7 +224,7 @@ function App() {
   function handleAddCard({ name, link }) {
     setIsLoading(true);
 
-    api.addNewCard({ name, link })
+    cardsApi.addNewCard({ name, link })
       .then(newCard => {
         setCards([newCard, ...cards]);
         closeAllPopups();
@@ -254,7 +240,7 @@ function App() {
 
       <Header
         isLoggedIn={isLoggedIn}
-        userLogin={headerUserLogin}
+        userLogin={userLogin}
         navlinkPath={headerNavlinkPath}
         navlinkText={headerNavlinkText}
         onSignOut={handleSignOut}
