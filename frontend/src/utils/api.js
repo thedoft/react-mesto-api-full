@@ -1,6 +1,6 @@
 import { handlePromiseRes } from './utils';
 
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'https://api.thedoft.mesto.students.nomoredomains.rocks';
 export const headers = {
   'Content-Type': 'application/json'
 };
@@ -60,6 +60,45 @@ export function patchUserAvatar({ avatar }) {
     body: JSON.stringify({
       avatar
     })
+  })
+  .then(res => handlePromiseRes(res))
+}
+
+export function getInitialCards() {
+  return fetch(`${BASE_URL}/cards`, {
+    headers,
+    credentials: 'include',
+  })
+  .then(res => handlePromiseRes(res))
+}
+
+export function addNewCard({ name, link }) {
+  return fetch(`${BASE_URL}/cards`, {
+    method: 'POST',
+    headers,
+    credentials: 'include',
+    body: JSON.stringify({
+      name,
+      link
+    })
+  })
+  .then(res => handlePromiseRes(res))
+}
+
+export function deleteCard({ _id }) {
+  return fetch(`${BASE_URL}/cards/${_id}`, {
+    method: 'DELETE',
+    headers,
+    credentials: 'include',
+  })
+  .then(res => handlePromiseRes(res))
+}
+
+export function changeLikeCardStatus({ _id }, method) {
+  return fetch(`${BASE_URL}/cards/likes/${_id}`, {
+    method: method,
+    headers,
+    credentials: 'include',
   })
   .then(res => handlePromiseRes(res))
 }

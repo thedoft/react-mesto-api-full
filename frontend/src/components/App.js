@@ -16,8 +16,7 @@ import ConfirmPopup from './ConfirmPopup';
 import InfoTooltip from './InfoTooltip';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import * as cardsApi from '../utils/cards-api';
-import * as userApi from '../utils/user-api';
+import * as api from '../utils/api';
 
 import infoTooltipOkImage from '../images/info-tooltip-ok.svg';
 import infoTooltipErrorImage from '../images/info-tooltip-error.svg';
@@ -65,7 +64,7 @@ function App() {
   function handleRegister({ email, password }) {
     setIsLoading(true);
 
-    userApi.register({ email, password })
+    api.register({ email, password })
       .then(() => {
         setInfoTooltipOk();
         setIsInfoTooltipOpen(true);
@@ -82,7 +81,7 @@ function App() {
   function handleLogin({ email, password }) {
     setIsLoading(true);
 
-    userApi.login({ email, password })
+    api.login({ email, password })
       .then(() => {
         setIsLoggedIn(true);
         setUserLogin(email);
@@ -100,7 +99,7 @@ function App() {
   }
 
   useEffect(() => {
-    userApi.getUserData()
+    api.getUserData()
       .then((userData) => {
         setCurrentUser(userData);
         setIsLoggedIn(true);
@@ -113,7 +112,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    cardsApi.getInitialCards()
+    api.getInitialCards()
       .then(initialCards => {
         setCards(initialCards);
       })
@@ -125,7 +124,7 @@ function App() {
   function handleCardLikeClick(card) {
     const isLiked = card.likes.some(user => user._id === currentUser._id);
 
-    cardsApi.changeLikeCardStatus({ _id: card._id}, (isLiked ? 'DELETE' : 'PUT'))
+    api.changeLikeCardStatus({ _id: card._id}, (isLiked ? 'DELETE' : 'PUT'))
       .then(newCard => {
         const newCards = cards.map(c => c._id === card._id ? newCard : c);
         setCards(newCards);
@@ -143,7 +142,7 @@ function App() {
   function handleCardDelete(card) {
     setIsLoading(true);
 
-    cardsApi.deleteCard({ _id: card._id })
+    api.deleteCard({ _id: card._id })
     .then(() => {
       const newCards = cards.filter(c => c._id !== card._id);
       setCards(newCards);
@@ -196,7 +195,7 @@ function App() {
   function handleUpdateUser({ name, about }) {
     setIsLoading(true);
 
-    userApi.patchUserProfile({ name, about })
+    api.patchUserProfile({ name, about })
       .then(userData => {
         setCurrentUser(userData);
         closeAllPopups();
@@ -210,7 +209,7 @@ function App() {
   function handleUpdateAvatar({ avatar }) {
     setIsLoading(true);
 
-    userApi.patchUserAvatar({ avatar })
+    api.patchUserAvatar({ avatar })
       .then(userData => {
         setCurrentUser(userData);
         closeAllPopups();
@@ -224,7 +223,7 @@ function App() {
   function handleAddCard({ name, link }) {
     setIsLoading(true);
 
-    cardsApi.addNewCard({ name, link })
+    api.addNewCard({ name, link })
       .then(newCard => {
         setCards([newCard, ...cards]);
         closeAllPopups();
