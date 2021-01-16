@@ -10,7 +10,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter basename={process.env.NODE_ENV === 'production' ? '/react-mesto-auth' : '/'}>
+    <BrowserRouter>
       <App />
     </BrowserRouter>
   </React.StrictMode>,

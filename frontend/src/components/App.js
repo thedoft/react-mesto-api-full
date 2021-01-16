@@ -105,10 +105,7 @@ function App() {
         setIsLoggedIn(true);
         setUserLogin(userData.email);
       })
-      .catch(() => {
-        setInfoTooltipError();
-        setIsInfoTooltipOpen(true);
-      });
+      .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
@@ -116,9 +113,7 @@ function App() {
       .then(initialCards => {
         setCards(initialCards);
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch((err) => console.log(err));
   }, []);
 
   function handleCardLikeClick(card) {
