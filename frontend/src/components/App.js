@@ -99,23 +99,20 @@ function App() {
   }
 
   useEffect(() => {
-    if (isLoggedIn) {
-      api.getUserData()
-        .then((userData) => {
-          setCurrentUser(userData);
-          setIsLoggedIn(true);
-          setUserLogin(userData.email);
-        })
-        .catch((err) => console.log(err));
-      }
-      return;
-  }, [isLoggedIn]);
+    api.getUserData()
+      .then((userData) => {
+        setCurrentUser(userData);
+        setIsLoggedIn(true);
+        setUserLogin(userData.email);
+      })
+      .catch((err) => console.log(err));
+  });
 
   useEffect(() => {
     if (isLoggedIn) {
       api.getInitialCards()
         .then(initialCards => {
-          setCards(initialCards);
+          setCards(initialCards.reverse());
         })
         .catch((err) => console.log(err));
       }
