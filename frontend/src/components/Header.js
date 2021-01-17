@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 import logo from '../images/logo.svg';
 
 function Header(props) {
-  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const currentUser = useContext(CurrentUserContext);
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   function updateWindowSize() {
     setWindowWidth(window.innerWidth);
@@ -13,7 +17,7 @@ function Header(props) {
     window.innerWidth <= 425 ? setIsMenuOpen(false) : setIsMenuOpen(true);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('resize', updateWindowSize);
 
     return () => {
@@ -33,7 +37,7 @@ function Header(props) {
   return (
     <header className="header">
       <div className={menuStyles}>
-        <p className="header__user-login">{props.userLogin}</p>
+        <p className="header__user-login">{currentUser.email}</p>
         <NavLink className={`header__navlink ${props.isLoggedIn ? 'header__navlink_logged-in' : ''}`}
           to={props.navlinkPath}
           onClick={props.onSignOut}

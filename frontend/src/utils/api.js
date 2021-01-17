@@ -105,7 +105,7 @@ export function deleteCard({ _id }) {
 
 export function changeLikeCardStatus({ _id }, method) {
   return fetch(`${BASE_URL}/cards/likes/${_id}`, {
-    method: method,
+    method,
     headers,
     credentials: 'include',
   })

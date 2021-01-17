@@ -39,7 +39,6 @@ function App() {
 
   const [headerNavlinkPath, setHeaderNavlinkPath] = useState('/');
   const [headerNavlinkText, setHeaderNavlinkText] = useState('');
-  const [userLogin, setUserLogin] = useState('');
 
   const [infoTooltipTitle, setInfoTooltipTitle] = useState('');
   const [infoTooltipImage, setInfoTooltipImage] = useState('');
@@ -71,7 +70,7 @@ function App() {
 
         history.push('/signin');
       })
-      .catch((err) => {
+      .catch(() => {
         setInfoTooltipError();
         setIsInfoTooltipOpen(true);
       })
@@ -82,9 +81,9 @@ function App() {
     setIsLoading(true);
 
     api.login({ email, password })
-      .then(() => {
+      .then((user) => {
         setIsLoggedIn(true);
-        setUserLogin(email);
+        setCurrentUser(user);
       })
       .catch(() => {
         setInfoTooltipError();
@@ -97,7 +96,6 @@ function App() {
     api.signout()
       .then(() => {
         setIsLoggedIn(false);
-        setUserLogin('');
         setCurrentUser({});
       })
       .catch((err) => console.log(err));
@@ -105,27 +103,25 @@ function App() {
 
   useEffect(() => {
     api.getUserData()
-      .then((userData) => {
-        setCurrentUser(userData);
+      .then((user) => {
         setIsLoggedIn(true);
-        setUserLogin(userData.email);
+        setCurrentUser(user);
+        return;
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (isLoggedIn) {
       api.getInitialCards()
-        .then((initialCards) => {
-          setCards(initialCards.reverse());
-        })
+        .then((initialCards) => setCards(initialCards.reverse()))
         .catch((err) => console.log(err));
       }
       return;
   }, [isLoggedIn]);
 
   function handleCardLikeClick(card) {
-    const isLiked = card.likes.some(user => user._id === currentUser._id);
+    const isLiked = card.likes.some(user => user === currentUser._id);
 
     api.changeLikeCardStatus({ _id: card._id}, (isLiked ? 'DELETE' : 'PUT'))
       .then(newCard => {
@@ -199,8 +195,8 @@ function App() {
     setIsLoading(true);
 
     api.patchUserProfile({ name, about })
-      .then(userData => {
-        setCurrentUser(userData);
+      .then(user => {
+        setCurrentUser(user);
         closeAllPopups();
       })
       .catch(err => {
@@ -213,8 +209,8 @@ function App() {
     setIsLoading(true);
 
     api.patchUserAvatar({ avatar })
-      .then(userData => {
-        setCurrentUser(userData);
+      .then(user => {
+        setCurrentUser(user);
         closeAllPopups();
       })
       .catch(err => {
@@ -242,7 +238,6 @@ function App() {
 
       <Header
         isLoggedIn={isLoggedIn}
-        userLogin={userLogin}
         navlinkPath={headerNavlinkPath}
         navlinkText={headerNavlinkText}
         onSignOut={handleSignout}

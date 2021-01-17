@@ -5,11 +5,11 @@ function Card(props) {
   const card = props.card;
   const currentUser = React.useContext(CurrentUserContext);
 
-  const isOwn = card.owner._id === currentUser._id;
+  const isOwn = card.owner === currentUser._id;
   const cardTrashButtonClassName = (
     `element__trash-button ${isOwn ? '' : 'element__trash-button_hidden'}`
   );
-  const isLiked = card.likes.some(user => user._id === currentUser._id);
+  const isLiked = card.likes.some(user => user === currentUser._id);
   const cardLikeButtonClassName = (
     `element__like-button ${isLiked ? 'element__like-button_active' : ''}`
   );
