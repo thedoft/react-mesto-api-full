@@ -4,19 +4,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const { celebrate, Joi, errors } = require('celebrate');
 
-const { createUser, login } = require('./controllers/users');
+const { createUser, login, signout } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const { corsConfig } = require('./middlewares/cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT } = process.env;
+const { PORT = 3000 } = process.env;
 const app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
@@ -25,7 +23,12 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useUnifiedTopology: true,
 });
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(requestLogger);
+
+app.use('*', cors(corsConfig));
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -51,22 +54,22 @@ app.post('/signin', celebrate({
 }), login);
 
 app.use(auth);
-
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.use(errorLogger);
+app.get('/signout', signout);
 
+app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {
   const { statusCode, message } = err;
 
   if (statusCode) {
-    res.status(statusCode).send({ message });
+    return res.status(statusCode).send({ message });
   }
 
-  next();
+  return next();
 });
 
 app.use((req, res) => res.status(500).send({ message: 'На сервере произошла ошибка' }));
