@@ -93,9 +93,14 @@ function App() {
       .finally(() => setIsLoading(false));
   }
 
-  function handleSignOut() {
-    setIsLoggedIn(false);
-    setUserLogin('');
+  function handleSignout() {
+    api.signout()
+      .then(() => {
+        setIsLoggedIn(false);
+        setUserLogin('');
+        setCurrentUser({});
+      })
+      .catch((err) => console.log(err));
   }
 
   useEffect(() => {
@@ -106,12 +111,12 @@ function App() {
         setUserLogin(userData.email);
       })
       .catch((err) => console.log(err));
-  });
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
       api.getInitialCards()
-        .then(initialCards => {
+        .then((initialCards) => {
           setCards(initialCards.reverse());
         })
         .catch((err) => console.log(err));
@@ -240,7 +245,7 @@ function App() {
         userLogin={userLogin}
         navlinkPath={headerNavlinkPath}
         navlinkText={headerNavlinkText}
-        onSignOut={handleSignOut}
+        onSignOut={handleSignout}
       />
 
       <main className="main">

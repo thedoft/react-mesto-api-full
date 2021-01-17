@@ -32,6 +32,14 @@ export function login({ email, password }) {
     .then((res) => handlePromiseRes(res))
 }
 
+export function signout() {
+  return fetch(`${BASE_URL}/signout`, {
+    headers,
+    credentials: 'include',
+  })
+    .then((res) => handlePromiseRes(res))
+}
+
 export function getUserData() {
   return fetch(`${BASE_URL}/users/me`, {
     headers,
