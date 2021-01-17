@@ -71,7 +71,7 @@ function App() {
 
         history.push('/signin');
       })
-      .catch(() => {
+      .catch((err) => {
         setInfoTooltipError();
         setIsInfoTooltipOpen(true);
       })
@@ -99,22 +99,28 @@ function App() {
   }
 
   useEffect(() => {
-    api.getUserData()
-      .then((userData) => {
-        setCurrentUser(userData);
-        setIsLoggedIn(true);
-        setUserLogin(userData.email);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    if (isLoggedIn) {
+      api.getUserData()
+        .then((userData) => {
+          setCurrentUser(userData);
+          setIsLoggedIn(true);
+          setUserLogin(userData.email);
+        })
+        .catch((err) => console.log(err));
+      }
+      return;
+  }, [isLoggedIn]);
 
   useEffect(() => {
-    api.getInitialCards()
-      .then(initialCards => {
-        setCards(initialCards);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    if (isLoggedIn) {
+      api.getInitialCards()
+        .then(initialCards => {
+          setCards(initialCards);
+        })
+        .catch((err) => console.log(err));
+      }
+      return;
+  }, [isLoggedIn]);
 
   function handleCardLikeClick(card) {
     const isLiked = card.likes.some(user => user._id === currentUser._id);

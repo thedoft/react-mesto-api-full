@@ -1,17 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Card from './Card';
 
 function Main(props) {
-  const currentUser = React.useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
+
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     props.setHeaderNavlinkData('/signin', 'Выйти');
+    setCards(props.cards.reverse());
 
     return () => {
+      setCards([]);
       props.setHeaderNavlinkData('/', '');
     }
-  });
+  }, [props]);
 
   return (
     <>
@@ -32,7 +36,7 @@ function Main(props) {
 
       <section className="elements">
         <ul className="elements__list">
-          {props.cards.map(card => (
+          {cards.map(card => (
             <Card card={card} key={card._id} onCardClick={props.onCardClick} onCardLike={props.onCardLike} onCardDelete={props.onCardDelete} />
           ))}
         </ul>

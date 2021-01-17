@@ -1,6 +1,7 @@
 import { handlePromiseRes } from './utils';
 
-export const BASE_URL = 'https://api.thedoft.mesto.students.nomoredomains.rocks';
+// export const BASE_URL = 'https://api.thedoft.mesto.students.nomoredomains.rocks';
+export const BASE_URL = 'http://localhost:3000';
 export const headers = {
   'Content-Type': 'application/json; charset=utf-8',
 };
@@ -13,6 +14,7 @@ export function register({ email, password }) {
       email,
       password
     }),
+    credentials: 'include',
   })
     .then((res) => handlePromiseRes(res))
 }
@@ -25,6 +27,7 @@ export function login({ email, password }) {
       email,
       password
     }),
+    credentials: 'include',
   })
     .then((res) => handlePromiseRes(res))
 }
