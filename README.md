@@ -3,4 +3,6 @@
 
 Пожалуйста, прикрепите в это описание ссылку на сайт, размещенный на Яндекс.Облаке.
 
-https://thedoft.mesto.students.nomoredomains.rocks
+Домен фронтенда - https://thedoft.mesto.students.nomoredomains.rocks
+Домен сервера - https://api.thedoft.mesto.students.nomoredomains.rocks
+Публичный IP-адрес сервера - 84.201.178.193
