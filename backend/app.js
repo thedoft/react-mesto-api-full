@@ -5,13 +5,15 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-
-const { celebrate, Joi, errors } = require('celebrate');
+const { errors } = require('celebrate');
 
 const { createUser, login, signout } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { corsConfig } = require('./middlewares/cors');
+const { createUserValidation, loginValidation } = require('./middlewares/celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+
+const NotFoundError = require('./errors/not-found-err');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -30,40 +32,23 @@ app.use(requestLogger);
 
 app.use('*', cors(corsConfig));
 
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
+app.post('/signup', createUserValidation, createUser);
 
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().uri({
-      scheme: [
-        'https',
-        'http',
-      ],
-      allowQuerySquareBrackets: true,
-    }),
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-  }),
-}), createUser);
-
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-  }),
-}), login);
+app.post('/signin', loginValidation, login);
 
 app.use(auth);
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
+
+app.use(require('./routes/index'));
 
 app.get('/signout', signout);
+
+app.get('*', () => {
+  try {
+    throw new NotFoundError('Запрашиваемый ресурс не найден');
+  } catch (err) {
+    throw new NotFoundError('Запрашиваемый ресурс не найден');
+  }
+});
 
 app.use(errorLogger);
 app.use(errors());
