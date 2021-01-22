@@ -22,11 +22,17 @@ function AddCardPopup(props) {
   }
 
   function handleNameChange(evt) {
-    setName(evt.target.value);
+    setName(
+      evt.target.value
+        .replace(/^\s/, '')
+        .replace('  ', ' '));
   }
 
   function handleLinkChange(evt) {
-    setLink(evt.target.value);
+    setLink(
+      evt.target.value
+        .replace(/^\s/, '')
+        .replace('  ', ' '));
   }
 
   return (

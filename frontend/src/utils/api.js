@@ -103,7 +103,7 @@ export function deleteCard({ _id }) {
 }
 
 export function changeLikeCardStatus({ _id }, method) {
-  return fetch(`${BASE_URL}/cards/likes/${_id}`, {
+  return fetch(`${BASE_URL}/cards/${_id}/likes`, {
     method,
     headers,
     credentials: 'include',

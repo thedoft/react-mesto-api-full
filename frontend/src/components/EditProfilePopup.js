@@ -26,11 +26,19 @@ function EditProfilePopup(props) {
   }
 
   function handleNameChange(evt) {
-    setName(evt.target.value);
+    setName(
+      evt.target.value
+        .replace(/^\s/, '')
+        .replace('  ', ' ')
+    );
   }
 
   function handleJobChange(evt) {
-    setAbout(evt.target.value);
+    setAbout(
+      evt.target.value
+        .replace(/^\s/, '')
+        .replace('  ', ' ')
+    );
   }
 
   return (

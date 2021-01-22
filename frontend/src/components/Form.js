@@ -5,11 +5,19 @@ export default function Form(props) {
   const [password, setPassword] = useState('');
 
   function handleEmailChange(evt) {
-    setEmail(evt.target.value)
+    setEmail(
+      evt.target.value
+        .replace(/^\s/, '')
+        .replace('  ', ' ')
+    );
   }
 
   function handlePasswordChange(evt) {
-    setPassword(evt.target.value)
+    setPassword(
+      evt.target.value
+        .replace(/^\s/, '')
+        .replace('  ', ' ')
+    );
   }
 
   function handleSubmit(evt) {
